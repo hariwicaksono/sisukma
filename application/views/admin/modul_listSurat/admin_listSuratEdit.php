@@ -131,7 +131,7 @@
                     <div class="form-group clearfix">
                       <div class="icheck-primary d-inline">
                         <input type="radio" value="1" id="EditSuratRadioAdministrator" name="access">
-                        <label for="EditSuratRadioAdministrator">Administrator Only</label>
+                        <label for="EditSuratRadioAdministrator">Hanya Administrator</label>
                       </div>
                       <div class="icheck-success d-inline ml-2">
                         <input type="radio" value="2" id="EditSuratRadioAdminMahasiswa"  name="access" checked>

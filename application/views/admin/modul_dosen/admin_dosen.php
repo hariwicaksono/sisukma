@@ -96,7 +96,7 @@
     <div class="modal fade" id="dosenDeleteModal<?php echo $all->id;?>">
       <div class="modal-dialog">
         <div class="modal-content">
-          <div class="modal-header bg-danger">
+          <div class="modal-header card-outline card-danger">
             <h5 class="modal-title">Hapus <?= $page;?> "<?php echo $all->nama;?>" </h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>

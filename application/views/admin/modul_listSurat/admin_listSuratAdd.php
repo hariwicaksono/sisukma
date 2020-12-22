@@ -47,7 +47,7 @@
       <div class="container-fluid">
         <div class="card">
           <div class="card-header">
-          <a href="<?php echo base_url('admin');?>">
+          <a href="<?php echo base_url('admin/sListSurat');?>">
               <i class="fas fa-arrow-left"></i>&ensp;Kembali
             </a>
           </div>
@@ -73,7 +73,7 @@
               <div class="form-group">
                 <label for="addSuratKopSurat" class="col-sm-2 col-form-label">Kops Surat</label>
                 <div class="col-sm-12">
-                  <textarea name="kopSurat" class="form-control ckeditor" id="addSuratKopSurat" placeholder="Kops Surat">
+                  <textarea name="kopSurat" class="form-control textarea" id="addSuratKopSurat" placeholder="Kops Surat">
                     <?= set_value('kopSurat')?>
                   </textarea>
                   <?= form_error('kopSurat', '<small class="text-danger pl-3">', '</small>');?>
@@ -82,7 +82,7 @@
               <div class="form-group">
                 <label for="addSuratHeaderSurat" class="col-sm-2 col-form-label">Header Surat</label>
                 <div class="col-sm-12">
-                  <textarea name="headerSurat" class="form-control ckeditor" id="addSuratHeaderSurat" placeholder="Seluruh Surat"> <?= set_value('headerSurat')?>
+                  <textarea name="headerSurat" class="form-control textarea" id="addSuratHeaderSurat" placeholder="Seluruh Surat"> <?= set_value('headerSurat')?>
                 </textarea>
                 <?= form_error('headerSurat', '<small class="text-danger pl-3">', '</small>');?>
               </div>
@@ -90,7 +90,7 @@
             <div class="form-group">
               <label for="addSuratIsiSurat" class="col-sm-2 col-form-label">Isi Surat</label>
               <div class="col-sm-12">
-                <textarea name="isiSurat" class="form-control ckeditor" id="addSuratIsiSurat" placeholder="Seluruh Surat">
+                <textarea name="isiSurat" class="form-control textarea" id="addSuratIsiSurat" placeholder="Seluruh Surat">
                   <?= set_value('isiSurat')?>
                 </textarea>
                 <?= form_error('isiSurat', '<small class="text-danger pl-3">', '</small>');?>
@@ -99,7 +99,7 @@
             <div class="form-group">
               <label for="addSuratFooterSurat" class="col-sm-2 col-form-label">Footer Surat</label>
               <div class="col-sm-12">
-                <textarea name="footerSurat" class="form-control ckeditor" id="addSuratFooterSurat" placeholder="Seluruh Surat">
+                <textarea name="footerSurat" class="form-control textarea" id="addSuratFooterSurat" placeholder="Seluruh Surat">
                   <?= set_value('footerSurat')?>
                 </textarea>
                 <?= form_error('footerSurat', '<small class="text-danger pl-3">', '</small>');?>
@@ -110,11 +110,11 @@
                 <div class="form-group clearfix">
                   <div class="icheck-primary d-inline">
                     <input type="radio" value="1" id="addSuratRadioAdministrator" name="access" checked>
-                    <label for="addSuratRadioAdministrator">Administrator Only</label>
+                    <label for="addSuratRadioAdministrator">Hanya Administrator</label>
                   </div>
                   <div class="icheck-success d-inline">
                     <input type="radio" value="2" id="addSuratRadioAdminMahasiswa" name="access" checked>
-                    <label for="addSuratRadioAdminMahasiswa">Admin And Mahasiswa</label>
+                    <label for="addSuratRadioAdminMahasiswa">Admin dan Mahasiswa</label>
                   </div>
                 </div>
               </div>

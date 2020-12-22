@@ -324,7 +324,7 @@
 <div class="modal fade" id="menuDelete<?= $alme->id_menu ;?>">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header bg-danger">
+      <div class="modal-header card-outline card-danger">
         <h5 class="modal-title">Hapus Menu <?= $alme->title ;?> </h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>

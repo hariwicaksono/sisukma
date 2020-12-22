@@ -116,7 +116,7 @@
               <div class="form-group clearfix">
                 <div class="icheck-primary d-inline">
                   <input type="radio" value="1" id="detailSuratRadioAdministrator" checked>
-                  <label for="detailSuratRadioAdministrator">Administrator Only</label>
+                  <label for="detailSuratRadioAdministrator">Hanya Administrator</label>
                 </div>
               </div>
             </div>
@@ -127,7 +127,7 @@
                 <div class="form-group clearfix">
                   <div class="icheck-success d-inline ml-2">
                     <input type="radio" value="2" id="detailSuratRadioAdminMahasiswa" checked>
-                    <label for="detailSuratRadioAdminMahasiswa">Admin dan Mahasiswa Only</label>
+                    <label for="detailSuratRadioAdminMahasiswa">Admin dan Mahasiswa</label>
                   </div>
                 </div>
               </div>
