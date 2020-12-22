@@ -286,10 +286,8 @@
                     <!-- /.card -->
 
                     <div class="form-group justify-content-between">
-                      <a class="btn btn-secondary btn-sm" href="<?php echo base_url('admin/sPermintaanSurat');?>">
-                        <i class="fas fa-arrow-left"></i>&ensp;Back
-                      </a>
-                      <button type="submit" class="btn btn-primary btn-sm float-right">Submit &ensp;<i class="fas fa-arrow-right"></i></button>
+                   
+                      <button type="submit" class="btn btn-primary">Submit &ensp;<i class="fas fa-arrow-right"></i></button>
                     </div>  
 
                   </form>
@@ -428,10 +426,8 @@
                       </div>
                       <hr>
                       <div class="form-group justify-content-between">
-                        <a class="btn btn-secondary btn-sm" href="<?php echo base_url('mahasiswa/pengajuanSurat');?>">
-                          <i class="fas fa-arrow-left"></i>&ensp;Kembali
-                        </a>
-                        <button type="submit" class="btn btn-primary btn-sm float-right">Submit &ensp;<i class="fas fa-arrow-right"></i></button>
+                   
+                        <button type="submit" class="btn btn-primary">Submit &ensp;<i class="fas fa-arrow-right"></i></button>
                       </div>             
                     </form>
                   </div>

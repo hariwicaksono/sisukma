@@ -41,7 +41,7 @@ class pengajuan extends CI_Controller {
 
 			/*----- Silahkan Memasukkan Kode Surat jika ada Kode Surat Baru -----*/
 
-			if ( !in_array($this->encrypt->decode($kd_surat), ['SP-KP'], true ) ) {
+			if ( !in_array($this->encrypt->decode($kd_surat), ['SP-KP','SKET'], true ) ) {
 				$this->toastr->error('Kode Surat Yang Anda Inginkan Tidak terdaftar');
 				redirect('admin/sPermintaanSurat');
 			}
@@ -100,7 +100,7 @@ class pengajuan extends CI_Controller {
 
 			/*----- Silahkan Memasukkan Kode Surat jika ada Kode Surat Baru -----*/
 
-			if ( !in_array($this->encrypt->decode($kd_surat), ['SP-KP'], true ) ) {
+			if ( !in_array($this->encrypt->decode($kd_surat), ['SP-KP','SKET'], true ) ) {
 				$this->toastr->error('Url Yang Anda Masukkan Salah');
 				redirect('mahasiswa/pengajuanSurat');
 			}
@@ -227,6 +227,61 @@ class pengajuan extends CI_Controller {
 
 					break;
 
+					case 'SKET':
+
+						/*------------------------------------------------------------------------*/
+						/*-- Code Di bawah Untuk Permintaan Surat Yang Di Ajukan Admin Langsung --*/
+						/*------------------------------------------------------------------------*/
+	
+						$this->form_validation->set_rules('no_surat', 'NO Surat','trim|required|is_unique[tb_selesai.no_surat]',[
+							'is_unique' => 'Nomer Surat Tersebut Telah Dipakai Silahkan Tekan Tombol Generate lagi Untuk Meregerate No Surat Baru']);
+						$this->form_validation->set_rules('dosen', 'Data Penanggung Jawab','required');
+						$this->form_validation->set_rules('cosnim', 'Data Mahasiswa','required');
+						$this->form_validation->set_rules('kepada', 'Kepada Surat di Tujukan','required');
+						$this->form_validation->set_rules('keperluan', 'Keperluan Surat ini di Ajukan','required');
+	
+						if($this->form_validation->run() == false){
+	
+							$data['name'] = $name;
+							$data['title'] = " Admin | Data Surat";
+							$data['parent'] = "Permohonan Surat";
+							$data['page'] = $kodeIDSurat->nm_surat;
+							$this->template->load('admin/layout/admin_template','pengajuan/SKET',$data);
+	
+						}else{
+	
+							$data = [
+	
+								'no_surat' => $this->db->escape_str($this->input->post('no_surat'),true),
+								'kd_surat' => $this->db->escape_str($this->input->post('kodeSurat'),true),
+								'nm_surat' => $this->db->escape_str($this->input->post('namaSurat'),true),
+								'isi_surat' => $this->input->post('semua'),
+								'permintaan_by' => $this->db->escape_str($this->input->post('cosnim'),true),
+								'permintaan_kdpro' => $this->db->escape_str($this->admin_model->getOneMhs($this->input->post('cosnim'))->kdpro,true),
+								'permintaan_tgl' => $this->db->escape_str(date('Y-m-d H:i:s'),true),
+								'status_surat' => $this->db->escape_str('CONFIRM',true),
+								'kepada' => $this->input->post('kepada'),
+								'keperluan' => $this->input->post('keperluan'),
+								'penyetuju_by' => $this->db->escape_str($this->input->post('penyetuju_by'),true),
+								'disetujui_tgl' => $this->db->escape_str(date('Y-m-d'),true),
+								'dosen' => $this->db->escape_str($this->input->post('dosen'),true),
+								'ttd' => $this->db->escape_str($this->input->post('dosen'),true),
+								'p' => $this->db->escape_str($this->input->post('p'),true),
+								'q' => $this->db->escape_str($this->input->post('q'),true),
+								'n' => $this->db->escape_str($this->input->post('n'),true),
+								'e' => $this->db->escape_str($this->input->post('e'),true),
+								'd' => $this->db->escape_str($this->input->post('d'),true),
+								'enkripsi' => $this->db->escape_str($this->input->post('enkripsi'),true)
+	
+							];
+	
+							$this->db->insert('tb_selesai',$data);
+							$this->toastr->success('Surat '.$kodeIDSurat->nm_surat.' Berhasil diajukan');
+							redirect('admin/sPermintaanSurat');
+						}
+	
+						break;
+
 					default:
 						# code...
 					break;
@@ -256,7 +311,7 @@ class pengajuan extends CI_Controller {
 					if($this->form_validation->run() == false){
 
 						$data['name'] = $name;
-						$data['title'] =  "Mahasiswa| Pengajuan Surat";
+						$data['title'] =  "Mahasiswa | Pengajuan Surat";
 						$data['parent'] = "Pengajuan Surat";
 						$data['page'] = $kodeIDSurat->nm_surat;
 						$this->template->load('mahasiswa/layout/view_template','pengajuan/SP-KP',$data);
@@ -287,6 +342,50 @@ class pengajuan extends CI_Controller {
 
 					}
 					break;
+
+					case 'SKET':
+
+						/*-------------------------------------------------------------------*/
+						/*-- Code Di bawah Untuk Permintaan Surat Yang Di Ajukan Mahasiswa --*/
+						/*-------------------------------------------------------------------*/
+	
+						$this->form_validation->set_rules('kepada', 'Kepada Surat Ini Ditujukan','required');
+						$this->form_validation->set_rules('keperluan', 'Keperluan Surat Ini Dibuat','required');
+	
+						if($this->form_validation->run() == false){
+	
+							$data['name'] = $name;
+							$data['title'] =  "Mahasiswa | Pengajuan Surat Keterangan";
+							$data['parent'] = "Pengajuan Surat";
+							$data['page'] = $kodeIDSurat->nm_surat;
+							$this->template->load('mahasiswa/layout/view_template','pengajuan/SKET',$data);
+	
+						}else{
+	
+							$wakilDekan = $this->db->get_where('tb_dosen',['jabatan' => $this->input->post('dosen')])->row()->id;
+	
+							$data = [
+	
+								'kd_surat' => $this->db->escape_str($this->input->post('kodeSurat'),true),
+								'nm_surat' => $this->db->escape_str($this->input->post('namaSurat'),true),
+								'isi_surat' => $this->input->post('semua'),
+								'permintaan_by' => $this->db->escape_str($this->input->post('nim'),true),
+								'permintaan_kdpro' => $this->db->escape_str($this->input->post('kdpro'),true),
+								'permintaan_tgl' => $this->db->escape_str(date('Y-m-d H:i:s'),true),
+								// 'dosen' => $this->db->escape_str($this->input->post('dosen'),true),
+								'dosen' => $wakilDekan,
+								'status_surat' => $this->db->escape_str('PENDING',true),
+								'kepada' => $this->input->post('kepada'),
+								'keperluan' => $this->input->post('keperluan')
+	
+							];
+	
+							$this->db->insert('tb_permintaan',$data);
+							$this->toastr->success('Surat '.$kodeIDSurat->nm_surat.' Berhasil diajukan');
+							redirect('mahasiswa/pengajuanSurat');
+	
+						}
+						break;
 
 					default:
 						# code...
@@ -430,6 +529,132 @@ class pengajuan extends CI_Controller {
 					}
 
 					break;
+
+					case 'SKET':
+
+						/*------------------------------------------------------------------------------------*/
+						/*-- Code Di bawah Untuk Konfirmasi Permintaan Surat Yang telah di Ajukan Mahasiswa --*/
+						/*------------------------------------------------------------------------------------*/
+	
+						$this->form_validation->set_rules('no_surat', 'NO Surat','trim|required|is_unique[tb_selesai.no_surat]',[
+							'is_unique' =>'Nomer Surat Tersebut Telah Dipakai Silahkan Tekan Tombol Generate lagi Untuk Meregerate No Surat Baru']);
+						$this->form_validation->set_rules('ttd', 'Tanda Tangan','required');
+	
+						if($this->form_validation->run() == false){
+	
+							$komponenSurat = [
+	
+								'bulan' => bulan_romawi(date('Y-m-d')),
+								'tahun' => date('Y'),
+								'kepada' => $this->admin_model->getOnePmr($id)->kepada,
+								'nama_mhs' => $mahasiswa->nmmhs,
+								'nim_mhs' => $mahasiswa->nim,
+								'angkatan_mhs' => semester($mahasiswa->thaka),
+								'prodi_mhs' => $prodi->prodi,
+								'dosen' => $dosen->nama,
+								'dosen_jabatan' => $dosen->jabatan
+	
+							];
+	
+							$data['isi'] = $this->admin_model->getOnePmr($id)->isi_surat;
+							$data['komponen'] = $komponenSurat;
+	
+							$data['name'] = $name;
+							$data['title'] = " Admin | Data Surat";
+							$data['parent'] = "Permintaan Surat";
+							$data['page'] = $kodeIDSurat->nm_surat;
+							$this->template->load('admin/layout/admin_template','pengajuan/SP-KP',$data);
+	
+						}else{
+	
+							$data = [
+	
+								'penyetuju_by' => $this->db->escape_str($this->input->post('penyetuju_by'),true),
+								'no_surat' => $this->db->escape_str($this->input->post('no_surat'),true),
+								'status_surat' => $this->db->escape_str('CONFIRM',true),
+								'ttd' => $this->db->escape_str($this->input->post('ttd'),true),
+								'disetujui_tgl' => $this->db->escape_str(date('Y-m-d'),true)
+	
+							];
+	
+							$this->db->where('id_permintaan', $this->input->post('zz'));
+							$this->db->update('tb_permintaan',$data);
+	
+							$nomor = $this->input->post('no_surat');
+	
+							$this->db->query("
+	
+								INSERT INTO tb_selesai (
+								no_surat, 
+								kd_surat, 
+								nm_surat, 
+								isi_surat, 
+								permintaan_by, 
+								permintaan_kdpro, 
+								permintaan_by_kelompok, 
+								permintaan_tgl, 
+								kepada, 
+								keperluan, 
+								ortu_permintaan_by, 
+								pkj_ortu_permintaan_by, 
+								dosen,
+								dosen_makul,
+								ttd,
+								status_surat,
+								penyetuju_by,
+								disetujui_tgl,
+								p,q,n,e,d,
+								enkripsi)  
+								SELECT 						
+								no_surat, 
+								kd_surat, 
+								nm_surat, 
+								isi_surat, 
+								permintaan_by, 
+								permintaan_kdpro, 
+								permintaan_by_kelompok, 
+								permintaan_tgl, 
+								kepada, 
+								keperluan, 
+								ortu_permintaan_by, 
+								pkj_ortu_permintaan_by, 
+								dosen,
+								dosen_makul,
+								ttd,
+								status_surat,
+								penyetuju_by,
+								disetujui_tgl,
+								p,q,n,e,d,
+								enkripsi from tb_permintaan where no_surat = '$nomor'
+	
+								");
+	
+							$this->db->query("DELETE FROM tb_permintaan where no_surat = '$nomor'");
+							// $this->db->query("DELETE FROM tb_selesai status_surat = 'PENDING'");
+	
+							// $notifSurat = $this->db->get_where('tb_selesai', ['id_selesai' => $id])->row();
+	
+							
+	
+							$notif = [
+	
+								'comment_subject' => 'Surat Di Konfirmasi',
+								'comment_text' => 'Surat Yang Anda Ajukan Pada tanggal '.$result->permintaan_tgl.' Telah Disetujui',
+								'comment_surat' => 'Y',
+								'comment_to' => $result->permintaan_by,
+								'comment_date' => $this->db->escape_str(date('Y-m-d'),true),
+								'comment_status' => 0
+	
+							];
+	
+							$this->db->insert('tb_comments',$notif);
+	
+							$this->toastr->success(' Surat Yang diajukan oleh '.$mahasiswa->nmmhs.' Telah di Konfirmasi!');
+							redirect('admin/sPermintaanSurat');
+	
+						}
+	
+						break;
 
 					default:
 						# code...
